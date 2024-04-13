@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:storylens/data/auth_repository.dart';
-import 'package:storylens/data/main_repository.dart';
-import 'package:storylens/provider/main_provider.dart';
 import 'package:storylens/ui/add_story_page.dart';
 import 'package:storylens/ui/detail_page.dart';
 import 'package:storylens/ui/home_page.dart';
@@ -109,19 +106,17 @@ class MyRouterDelegate extends RouterDelegate
   List<Page> get _loggedInStack => [
         MaterialPage(
             key: const ValueKey("HomePage"),
-            child: ChangeNotifierProvider<MainProvider>(
-                create: (_) => MainProvider(mainRepository: MainRepository()),
-                child: HomePage(onLogout: () async {
-                  await authRepository.setLoginToken("");
-                  isTokenNotEmpty = false;
-                  notifyListeners();
-                }, onTapped: (String storyId) {
-                  selectedItem = storyId;
-                  notifyListeners();
-                }, addStory: () {
-                  isAddStory = true;
-                  notifyListeners();
-                }))),
+            child: HomePage(onLogout: () async {
+              await authRepository.setLoginToken("");
+              isTokenNotEmpty = false;
+              notifyListeners();
+            }, onTapped: (String storyId) {
+              selectedItem = storyId;
+              notifyListeners();
+            }, addStory: () {
+              isAddStory = true;
+              notifyListeners();
+            })),
         if (isAddStory == true)
           MaterialPage(
               key: const ValueKey("AddStoryPage"),
