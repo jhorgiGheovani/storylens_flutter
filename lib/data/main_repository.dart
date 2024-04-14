@@ -7,13 +7,13 @@ import 'package:storylens/data/remote/model/story_details.dart';
 class MainRepository {
   final String tokenKey = 'TOKEN';
 
-  Future<Story> getListStory() async {
+  Future<Story> getListStory(int page, int size) async {
     try {
       final apiService = ApiService();
       final sharedPreferences = await SharedPreferences.getInstance();
       final token = sharedPreferences.getString(tokenKey);
 
-      return await apiService.getListStory(token!);
+      return await apiService.getListStory(token!, page, size);
     } catch (e) {
       rethrow;
     }

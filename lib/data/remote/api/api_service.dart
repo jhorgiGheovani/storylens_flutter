@@ -46,13 +46,15 @@ class ApiService {
     return LoginResponse.fromJson(jsonDecode(response.body));
   }
 
-  Future<Story> getListStory(String token) async {
+  Future<Story> getListStory(String token,
+      [int page = 1, int size = 10]) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
     };
-    final response =
-        await http.get(Uri.parse("$_baseUrl/stories"), headers: headers);
+    final response = await http.get(
+        Uri.parse("$_baseUrl/stories?&size=$size&page=$page"),
+        headers: headers);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return Story.fromJson(jsonDecode(response.body));
     } else {

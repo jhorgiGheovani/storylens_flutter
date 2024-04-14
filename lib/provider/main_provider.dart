@@ -13,7 +13,7 @@ class MainProvider extends ChangeNotifier {
 
   MainProvider({required this.mainRepository});
 
-  late Story _story;
+  // late Story _story;
   late StoryDetails _storyDetails;
   late GeneralPostResponse _generalPostResponse;
   ResultState _state = ResultState.loading;
@@ -22,11 +22,16 @@ class MainProvider extends ChangeNotifier {
   String _message = '';
 
   String get message => _message;
-  Story? get story => _story;
+  // Story? get story => _story;
   StoryDetails? get storyDetail => _storyDetails;
   GeneralPostResponse? get uploadStoryResponse => _generalPostResponse;
   ResultState get state => _state;
   SubmitState get submitState => _submitState;
+
+  //infinite scrolling
+  int? pageItems = 1;
+  int sizeItems = 10;
+  List<ListStory> stories = []; //array to store list store that fetched
 
   //upload images
   bool isUploading = true;
@@ -44,29 +49,36 @@ class MainProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> getStory() async {
+  Future<void> getStory() async {
     try {
-      _state = ResultState.loading;
-      notifyListeners();
-      final data = await mainRepository.getListStory();
-      _story = data;
-      if (data.listStory.isEmpty) {
-        _state = ResultState.noData;
+      if (pageItems == 1) {
+        _state = ResultState.loading;
         notifyListeners();
-        return _message = "There is no data to load";
-      } else {
-        _state = ResultState.hasData;
-        notifyListeners();
-        return _story = data;
       }
+
+      final data = await mainRepository.getListStory(pageItems!, sizeItems);
+      stories.addAll(data.listStory);
+      _state = ResultState.hasData;
+
+      if (data.listStory.length < sizeItems) {
+        pageItems = null;
+      } else {
+        pageItems = pageItems! + 1;
+      }
+      notifyListeners();
+
+      //Requirment
+      //1. load data with new page when reach end of screen
+      //2. load data with previous page when user scroll uo
+      //3. only request new api when user successfully add new story, don't request new api when user open detail
     } catch (e) {
       _state = ResultState.error;
       notifyListeners();
 
       if (e is ClientException) {
-        return _message = 'Something wrong with your network!';
+        _message = 'Something wrong with your network!';
       } else {
-        return _message = e.toString();
+        _message = e.toString();
       }
     }
   }
