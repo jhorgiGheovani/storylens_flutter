@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:storylens/data/main_repository.dart';
-import 'package:storylens/data/remote/model/general_post_response.dart';
+import 'package:storylens/data/remote/api/general_post_response.dart';
 import 'package:storylens/data/remote/model/story.dart';
 import 'package:storylens/data/remote/model/story_details.dart';
 import 'package:storylens/provider/states.dart';
@@ -104,10 +106,15 @@ class MainProvider extends ChangeNotifier {
   }
 
   Future<dynamic> uploadStory(
-      List<int> bytes, String fileName, String description) async {
+    List<int> bytes,
+    String fileName,
+    String description,
+    double? longitude,
+    double? latitude,
+  ) async {
     try {
-      final uploadStory =
-          await mainRepository.uploadStory(bytes, fileName, description);
+      final uploadStory = await mainRepository.uploadStory(
+          bytes, fileName, description, longitude, latitude);
       _generalPostResponse = uploadStory;
       isUploading = false;
       _submitState = SubmitState.success;

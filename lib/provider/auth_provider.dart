@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:storylens/data/auth_repository.dart';
-import 'package:storylens/data/remote/model/general_post_response.dart';
+import 'package:storylens/data/remote/api/general_post_response.dart';
 import 'package:storylens/data/remote/model/login_response.dart';
 import 'package:storylens/provider/states.dart';
 

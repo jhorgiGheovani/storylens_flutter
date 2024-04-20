@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:storylens/data/remote/model/general_post_response.dart';
+import 'package:storylens/data/remote/api/general_post_response.dart';
 import 'package:storylens/data/remote/model/login_request_body.dart';
 import 'package:storylens/data/remote/model/login_response.dart';
 import 'package:storylens/data/remote/model/register_request_body.dart';
@@ -82,6 +82,8 @@ class ApiService {
     String fileName,
     String description,
     String token,
+    double? longitude,
+    double? latitude,
   ) async {
     //header
     Map<String, String> headers = {
@@ -96,7 +98,12 @@ class ApiService {
       filename: fileName,
     );
 
-    final Map<String, String> fields = {
+    final Map<String, String> fieldsWithLoc = {
+      "description": description,
+      "lon": longitude.toString(),
+      "lat": latitude.toString(),
+    };
+    final Map<String, String> fieldsWithoutLoc = {
       "description": description,
     };
 
@@ -108,7 +115,12 @@ class ApiService {
 
     //add request body and headers to request
     request.files.add(multiPartFile);
-    request.fields.addAll(fields);
+    if (longitude == null && latitude == null) {
+      request.fields.addAll(fieldsWithoutLoc);
+    } else {
+      request.fields.addAll(fieldsWithLoc);
+    }
+
     request.headers.addAll(headers);
 
     //get response

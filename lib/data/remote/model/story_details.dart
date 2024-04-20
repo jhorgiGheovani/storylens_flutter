@@ -1,21 +1,22 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'story_details.g.dart';
+
+@JsonSerializable()
 class StoryDetails {
   final bool error;
   final String message;
   final StoryDetailsItem story;
-
   StoryDetails({
     required this.error,
     required this.message,
     required this.story,
   });
 
-  factory StoryDetails.fromJson(Map<String, dynamic> json) => StoryDetails(
-        error: json["error"],
-        message: json["message"],
-        story: StoryDetailsItem.fromJson(json["story"]),
-      );
+  factory StoryDetails.fromJson(json) => _$StoryDetailsFromJson(json);
 }
 
+@JsonSerializable()
 class StoryDetailsItem {
   final String id;
   final String name;
@@ -35,14 +36,5 @@ class StoryDetailsItem {
     required this.lon,
   });
 
-  factory StoryDetailsItem.fromJson(Map<String, dynamic> json) =>
-      StoryDetailsItem(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        photoUrl: json["photoUrl"],
-        createdAt: json["createdAt"],
-        lat: json["lat"]?.toDouble(),
-        lon: json["lon"]?.toDouble(),
-      );
+  factory StoryDetailsItem.fromJson(json) => _$StoryDetailsItemFromJson(json);
 }

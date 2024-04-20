@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'login_response.g.dart';
+
+@JsonSerializable()
 class LoginResponse {
   final bool error;
   final String message;
@@ -8,16 +13,17 @@ class LoginResponse {
     required this.message,
     this.loginResult,
   });
-
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-        error: json["error"],
-        message: json["message"],
-        loginResult: json["loginResult"] != null
-            ? LoginResult.fromJson(json["loginResult"])
-            : null,
-      );
+  factory LoginResponse.fromJson(json) => _$LoginResponseFromJson(json);
+  // factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+  //       error: json["error"],
+  //       message: json["message"],
+  //       loginResult: json["loginResult"] != null
+  //           ? LoginResult.fromJson(json["loginResult"])
+  //           : null,
+  //     );
 }
 
+@JsonSerializable()
 class LoginResult {
   final String userId;
   final String name;
@@ -29,9 +35,5 @@ class LoginResult {
     required this.token,
   });
 
-  factory LoginResult.fromJson(Map<String, dynamic> json) => LoginResult(
-        userId: json["userId"],
-        name: json["name"],
-        token: json["token"],
-      );
+  factory LoginResult.fromJson(json) => _$LoginResultFromJson(json);
 }

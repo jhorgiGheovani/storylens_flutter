@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -6,12 +7,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storylens/provider/main_provider.dart';
+import 'package:storylens/provider/page_manager.dart';
 import 'package:storylens/provider/states.dart';
 
 class AddStoryPage extends StatefulWidget {
-  const AddStoryPage({super.key, required this.uploadSuccess});
+  const AddStoryPage(
+      {super.key, required this.uploadSuccess, required this.gotoMapsScreen});
 
   final Function() uploadSuccess;
+  final Function() gotoMapsScreen;
 
   @override
   State<StatefulWidget> createState() => _AddStoryPage();
@@ -19,6 +23,10 @@ class AddStoryPage extends StatefulWidget {
 
 class _AddStoryPage extends State<AddStoryPage> {
   final descController = TextEditingController();
+  // double? lon = null;
+  // double? lat = null;
+  double? lon;
+  double? lat;
 
   @override
   void dispose() {
@@ -47,7 +55,6 @@ class _AddStoryPage extends State<AddStoryPage> {
                       TextButton(
                         onPressed: () {
                           final mainProvider = context.read<MainProvider>();
-
                           final imagePath = mainProvider.imagePath;
                           final imageFile = mainProvider.imageFile;
                           final scaffoldMessenger =
@@ -57,7 +64,15 @@ class _AddStoryPage extends State<AddStoryPage> {
                               content: Text("Please select an images first!"),
                             ));
                           }
-                          _onUpload(descController.text, scaffoldMessenger);
+                          _onUpload(
+                              descController.text, scaffoldMessenger, lon, lat);
+                          // if (lon != null || lat != null) {
+                          //   _onUpload(descController.text, scaffoldMessenger,
+                          //       lon!, lat!);
+                          // } else {
+                          //   _onUpload(descController.text, scaffoldMessenger,
+                          //       null, null);
+                          // }
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -139,6 +154,25 @@ class _AddStoryPage extends State<AddStoryPage> {
                           size: 19,
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () async {
+                          widget.gotoMapsScreen();
+                          final provider = context.read<PageManager<double>>();
+                          final results = await Future.wait([
+                            provider.getLon(),
+                            provider.getLat(),
+                          ]);
+                          lon = results[0];
+                          lat = results[1];
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Icon(
+                              FontAwesomeIcons.locationDot,
+                              color: Colors.blue.shade500,
+                              size: 18,
+                            )),
+                      )
                     ],
                   ),
                 )
@@ -150,7 +184,12 @@ class _AddStoryPage extends State<AddStoryPage> {
     );
   }
 
-  _onUpload(String desc, ScaffoldMessengerState scaffoldMessenger) async {
+  _onUpload(
+    String desc,
+    ScaffoldMessengerState scaffoldMessenger,
+    double? longitude,
+    double? latitude,
+  ) async {
     final mainProvider = context.read<MainProvider>();
 
     final imagePath = mainProvider.imagePath;
@@ -161,7 +200,8 @@ class _AddStoryPage extends State<AddStoryPage> {
     final bytes = await imageFile.readAsBytes();
     final newBytes = await mainProvider.compressImage(bytes);
 
-    await mainProvider.uploadStory(newBytes, fileName, desc);
+    await mainProvider.uploadStory(
+        newBytes, fileName, desc, longitude, latitude);
 
     if (mainProvider.submitState == SubmitState.success) {
       mainProvider.setImageFile(null);

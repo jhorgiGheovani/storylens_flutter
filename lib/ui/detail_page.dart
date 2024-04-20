@@ -7,6 +7,7 @@ import 'package:storylens/data/main_repository.dart';
 import 'package:storylens/data/remote/model/story_details.dart';
 import 'package:storylens/provider/main_provider.dart';
 import 'package:storylens/provider/states.dart';
+import 'package:storylens/widgets/maps_preview.dart';
 
 class DetailPage extends StatefulWidget {
   final String quoteId;
@@ -114,6 +115,16 @@ class _DetailPage extends State<DetailPage> {
                   Text(
                     convertDate(data.createdAt),
                     style: TextStyle(color: Colors.grey.shade700),
+                  ),
+                  SizedBox(
+                    width: double.infinity, // Adjust width as needed
+                    height: 200, // Adjust height as needed
+                    child: data.lat != null && data.lon != null
+                        ? MapsPreview(
+                            latitude: data.lat,
+                            longitude: data.lon,
+                          )
+                        : Container(), // Or any other placeholder widget or null to load nothing
                   )
                 ],
               ))),

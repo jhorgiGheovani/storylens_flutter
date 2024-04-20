@@ -4,6 +4,7 @@ import 'package:storylens/ui/add_story_page.dart';
 import 'package:storylens/ui/detail_page.dart';
 import 'package:storylens/ui/home_page.dart';
 import 'package:storylens/ui/login_page.dart';
+import 'package:storylens/ui/maps_page.dart';
 import 'package:storylens/ui/register_page.dart';
 import 'package:storylens/ui/splash_screen.dart';
 
@@ -16,6 +17,7 @@ class MyRouterDelegate extends RouterDelegate
   bool? isTokenNotEmpty;
   bool isRegister = false;
   bool isAddStory = false;
+  bool gotoMapsScreen = false;
   String? selectedItem;
 
   MyRouterDelegate(this.authRepository)
@@ -47,11 +49,14 @@ class MyRouterDelegate extends RouterDelegate
         if (!didPop) {
           return false;
         }
-
+        if (gotoMapsScreen == true) {
+          return gotoMapsScreen = false;
+        }
         isRegister =
             false; // if user press back button then isRegister set to false and user go to login Page
         selectedItem = null;
         isAddStory = false;
+
         notifyListeners();
 
         return true;
@@ -120,11 +125,26 @@ class MyRouterDelegate extends RouterDelegate
         if (isAddStory == true)
           MaterialPage(
               key: const ValueKey("AddStoryPage"),
-              child: AddStoryPage(uploadSuccess: () {
-                isAddStory = false;
+              child: AddStoryPage(
+                uploadSuccess: () {
+                  isAddStory = false;
 
-                notifyListeners();
-              })),
+                  notifyListeners();
+                },
+                gotoMapsScreen: () {
+                  gotoMapsScreen = true;
+                  notifyListeners();
+                },
+              )),
+        if (gotoMapsScreen == true)
+          MaterialPage(
+              key: const ValueKey("MapsScreen"),
+              child: MapsScreen(
+                backToAddStoryPage: () {
+                  gotoMapsScreen = false;
+                  notifyListeners();
+                },
+              )),
         if (selectedItem != null)
           MaterialPage(
             key: ValueKey(selectedItem),

@@ -4,6 +4,7 @@ import 'package:storylens/data/auth_repository.dart';
 import 'package:storylens/data/main_repository.dart';
 import 'package:storylens/provider/auth_provider.dart';
 import 'package:storylens/provider/main_provider.dart';
+import 'package:storylens/provider/page_manager.dart';
 import 'package:storylens/routes/router_delegate.dart';
 
 void main() {
@@ -36,7 +37,9 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<AuthProvider>(
               create: (_) => AuthProvider(authRepository: AuthRepository())),
           ChangeNotifierProvider<MainProvider>(
-              create: (_) => MainProvider(mainRepository: MainRepository()))
+              create: (_) => MainProvider(mainRepository: MainRepository())),
+          ChangeNotifierProvider<PageManager<double>>(
+              create: (_) => PageManager())
         ],
         child: MaterialApp(
           title: 'Storylens',

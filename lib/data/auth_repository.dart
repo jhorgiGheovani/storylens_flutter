@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storylens/data/remote/api/api_service.dart';
-import 'package:storylens/data/remote/model/general_post_response.dart';
+import 'package:storylens/data/remote/api/general_post_response.dart';
 import 'package:storylens/data/remote/model/login_response.dart';
 
 class AuthRepository {
