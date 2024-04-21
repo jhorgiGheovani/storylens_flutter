@@ -21,18 +21,22 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     final mainProvider = context.read<MainProvider>();
     scrollController.addListener(() {
+      //cek kodisi kalau scroll udah sampai ujung
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent) {
+        //cek kalau page item masih ada
         if (mainProvider.pageItems != null) {
-          mainProvider.getStory();
+          mainProvider
+              .getStory(); //kalau scroll udah sampai ujung dan page item masih ada maka fetch api lagi
         }
       }
     });
@@ -43,6 +47,20 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     super.dispose();
     scrollController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // Trigger API call or refresh when the app is resumed
+      final mainProvider = context.read<MainProvider>();
+      // mainProvider.getStory();
+      // mainProvider.stories.clear();
+      mainProvider.pageItems = 1;
+      Future.microtask(() async => mainProvider.getStory());
+    }
   }
 
   @override

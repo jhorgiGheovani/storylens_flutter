@@ -66,13 +66,6 @@ class _AddStoryPage extends State<AddStoryPage> {
                           }
                           _onUpload(
                               descController.text, scaffoldMessenger, lon, lat);
-                          // if (lon != null || lat != null) {
-                          //   _onUpload(descController.text, scaffoldMessenger,
-                          //       lon!, lat!);
-                          // } else {
-                          //   _onUpload(descController.text, scaffoldMessenger,
-                          //       null, null);
-                          // }
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -206,6 +199,11 @@ class _AddStoryPage extends State<AddStoryPage> {
     if (mainProvider.submitState == SubmitState.success) {
       mainProvider.setImageFile(null);
       mainProvider.setImagePath(null);
+      //  final mainProvider = context.read<MainProvider>();
+      // mainProvider.getStory();
+      mainProvider.stories.clear();
+      mainProvider.pageItems = 1;
+      Future.microtask(() async => mainProvider.getStory());
       widget.uploadSuccess();
       // await mainProvider.getStory();
     } else if (mainProvider.submitState == SubmitState.error) {

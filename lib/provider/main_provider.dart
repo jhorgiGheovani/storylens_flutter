@@ -30,11 +30,6 @@ class MainProvider extends ChangeNotifier {
   ResultState get state => _state;
   SubmitState get submitState => _submitState;
 
-  //infinite scrolling
-  int? pageItems = 1;
-  int sizeItems = 10;
-  List<ListStory> stories = []; //array to store list store that fetched
-
   //upload images
   bool isUploading = true;
 
@@ -51,15 +46,21 @@ class MainProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //handle get story with pagination
+  //infinite scrolling
+  int? pageItems = 1;
+  int sizeItems = 10;
+  List<ListStory> stories = []; //array to store list store that fetched
   Future<void> getStory() async {
     try {
       if (pageItems == 1) {
         _state = ResultState.loading;
         notifyListeners();
       }
-
+      // stories.clear();
       final data = await mainRepository.getListStory(pageItems!, sizeItems);
       stories.addAll(data.listStory);
+
       _state = ResultState.hasData;
 
       if (data.listStory.length < sizeItems) {
@@ -84,6 +85,12 @@ class MainProvider extends ChangeNotifier {
       }
     }
   }
+
+  // Future<void> refreshPage() async {
+  //   stories.clear();
+  //   final data = await mainRepository.getListStory(pageItems!, sizeItems);
+  //     stories.addAll(data.listStory);
+  // }
 
   Future<dynamic> getStoryDetails(String id) async {
     try {
