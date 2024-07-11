@@ -47,6 +47,12 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            colorSchemeSeed: Colors.black,
+          ),
+          themeMode: ThemeMode.dark,
           home: Router(
             routerDelegate: myRouterDelegate,
             backButtonDispatcher: RootBackButtonDispatcher(),

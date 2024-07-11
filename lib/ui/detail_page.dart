@@ -24,7 +24,9 @@ class _DetailPage extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: const Text(
           "Details",
         ),
@@ -32,7 +34,7 @@ class _DetailPage extends State<DetailPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Divider(
-            color: Colors.grey.shade300, // You can specify any color here
+            color: Colors.grey.shade900, // You can specify any color here
             height: 0.2,
           ),
         ),
@@ -121,8 +123,8 @@ class _DetailPage extends State<DetailPage> {
                     height: 200, // Adjust height as needed
                     child: data.lat != null && data.lon != null
                         ? MapsPreview(
-                            latitude: data.lat,
-                            longitude: data.lon,
+                            latitude: data.lon,
+                            longitude: data.lat,
                           )
                         : Container(), // Or any other placeholder widget or null to load nothing
                   )

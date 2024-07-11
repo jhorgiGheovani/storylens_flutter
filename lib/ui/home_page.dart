@@ -67,12 +67,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        shadowColor: Colors.white,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.black,
+        shadowColor: Colors.grey,
         title: const Text(
           "Storylens",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         elevation: 1,
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             },
             icon: const Icon(
               Icons.more_vert,
-              color: Colors.black87,
+              color: Colors.white,
             ),
             itemBuilder: (BuildContext context) {
               return {'Logout'}.map((String choice) {
@@ -102,8 +102,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ),
       body: _buildList(),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.blue.shade500,
         onPressed: () => widget.addStory(),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

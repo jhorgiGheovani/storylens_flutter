@@ -34,3 +34,4 @@ flutter:
   assets:
     - images/login.png
     - images/register.png
+    - images/loginbg.jpg

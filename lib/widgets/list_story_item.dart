@@ -16,9 +16,11 @@ class ListStoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.black,
       child: GestureDetector(
         onTap: () => onTapped(story!.id),
         child: Card(
+          color: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),

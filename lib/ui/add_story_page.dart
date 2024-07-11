@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:storylens/provider/main_provider.dart';
 import 'package:storylens/provider/page_manager.dart';
 import 'package:storylens/provider/states.dart';
+import 'package:storylens/utils/customfab.dart';
 
 class AddStoryPage extends StatefulWidget {
   const AddStoryPage(
@@ -37,6 +38,7 @@ class _AddStoryPage extends State<AddStoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -106,18 +108,18 @@ class _AddStoryPage extends State<AddStoryPage> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: const FixedCenterDockedFabLocation(),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
-            color: Colors.white,
+            color: Colors.black,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Divider(
-                  color: Colors.grey.shade300,
+                  color: Colors.grey.shade800,
                   height: 0,
                 ),
                 Padding(
